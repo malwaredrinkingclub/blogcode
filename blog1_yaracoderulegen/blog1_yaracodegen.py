@@ -13,7 +13,7 @@ try:
 except ImportError:
     print "Couldn't import IDA modules; some functionality may not work as expected"
 
-DEBUG = True
+DEBUG = False
 
 class i386DisasmParts(i386Disasm):
     """Diassembler customisation to track the bytes we want to keep"""
