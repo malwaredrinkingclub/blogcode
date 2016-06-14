@@ -13,7 +13,7 @@ try:
 except ImportError:
     print "Couldn't import IDA modules; some functionality may not work as expected"
 
-DEBUG = False
+DEBUG = True
 
 class i386DisasmParts(i386Disasm):
     """Diassembler customisation to track the bytes we want to keep"""
@@ -238,7 +238,7 @@ def yara_wildcard_instruction(ins):
         elif isinstance(ins.opers[i], i386ImmOper) or isinstance(ins.opers[i], i386ImmMemOper) or isinstance(ins.opers[i], i386PcRelOper):
             # Need to check if this is actually a reference to some memory (or code) (e.g. an offset);
             # We rely on IDA tracking references for this
-            if idc.Dfirst(ins.va) != idc.BADADDR or idc.Rfirst(ins.va) != idc.BADADDR:
+            if idc.Dfirst(ins.va) != idc.BADADDR or idc.Rfirst(getattr(ins, 'imm', idc.BADADDR)) != idc.BADADDR:
                 # Got a data reference, its an immediate value so can mask the whole thing
                 opstring += "?? " * len(ins.partz["operands"][i])
             else:
